@@ -1,0 +1,42 @@
+FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu16.04 
+COPY packages/sys/sources.list /etc/apt/sources.list
+SHELL ["/bin/bash","-c"]
+RUN set -x && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends wget unzip git vim lrzsz && \
+    mkdir -p /root/projects/infer_lib/ && \
+    mkdir -p /root/projects/models/ && \
+    mkdir -p /root/downloads/ && \
+    cd /root/downloads/ && \
+    wget -c https://paddleseg.bj.bcebos.com/deploy/docker/cudnn-10.0-linux-x64-v7.4.1.5.tgz && \
+    tar xvf cudnn-10.0-linux-x64-v7.4.1.5.tgz && \
+    mv cuda/include/* /usr/local/cuda/include/ && \
+    mv cuda/lib64/* /usr/local/cuda/lib64/ && \
+    wget -c https://paddleseg.bj.bcebos.com/deploy/docker/gcc-4.9.4.tar.bz2 && \
+    tar xvfj gcc-4.9.4.tar.bz2 && \
+    mv gcc-4.9.4 /usr/local/ && \
+    echo "alias ll='ls -lF'" >> /root/.bashrc && \
+    echo "export CC=/usr/local/gcc-4.9.4/bin/gcc" >> /root/.bashrc && \
+    echo "export CXX=/usr/local/gcc-4.9.4/bin/g++" >> /root/.bashrc && \
+    wget -c https://paddleseg.bj.bcebos.com/inference/human_freeze_model.tar.bz2 && \
+    tar xvfj human_freeze_model.tar.bz2 && \
+    mv human_freeze_model /root/projects/models/ && \
+    wget -c https://paddleseg.bj.bcebos.com/inference/cmake-3.15.0.tar.gz && \
+    tar xvf cmake-3.15.0.tar.gz && \
+    cd cmake-3.15.0 && \
+    mkdir build && cd build && \
+    ../configure && \
+    make -j12 && make install && \ 
+    wget -c https://paddleseg.bj.bcebos.com/inference/opencv3gcc4.tar.bz2 && \
+    tar xvfj opencv3gcc4.tar.bz2 && \
+    mv opencv3gcc4 /root/projects/infer_lib/ && \ 
+    wget -c https://paddle-inference-lib.bj.bcebos.com/1.6.2-gpu-cuda10-cudnn7-avx-mkl-trt5/fluid_inference.tgz && \
+    tar xvf fluid_inference.tgz && \
+    mv fluid_inference /root/projects/infer_lib/ && \
+    wget -c https://paddleseg.bj.bcebos.com/inference/PaddleSeg.tar.bz2 && \
+    tar xvfj PaddleSeg.tar.bz2 && \
+    mv PaddleSeg /root/projects/ && \
+    cd /root/projects/PaddleSeg/deploy/cpp/ && \
+    mkdir build && cd build && \
+    wget -c https://paddleseg.bj.bcebos.com/deploy/docker/seg_cpp_build.sh && \
+    rm -rf /root/downloads/ \
