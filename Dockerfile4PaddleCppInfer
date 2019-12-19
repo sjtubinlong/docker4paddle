@@ -19,9 +19,12 @@ RUN set -x && \
     echo "alias ll='ls -lF'" >> /root/.bashrc && \
     echo "export CC=/usr/local/gcc-4.8.5/bin/gcc" >> /root/.bashrc && \
     echo "export CXX=/usr/local/gcc-4.8.5/bin/g++" >> /root/.bashrc && \
-    wget -c https://paddleseg.bj.bcebos.com/inference/human_freeze_model.tar.bz2 && \
-    tar xvfj human_freeze_model.tar.bz2 && \
-    mv human_freeze_model /root/projects/models/ && \
+    wget -c https://paddleseg.bj.bcebos.com/deploy/docker/humanseg_origin.tar.bz2 && \
+    tar xvfj humanseg_origin.tar.bz2 && \
+    mv humanseg_origin /root/projects/models/ && \
+    wget -c https://paddleseg.bj.bcebos.com/deploy/docker/humanseg_pr.tar.bz2 && \
+    tar xvfj humanseg_pr.tar.bz2 && \
+    mv humanseg_pr /root/projects/models/ && \
     wget -c https://paddleseg.bj.bcebos.com/inference/cmake-3.15.0.tar.gz && \
     tar xvf cmake-3.15.0.tar.gz && \
     cd cmake-3.15.0 && \
