@@ -4,14 +4,15 @@ SHELL ["/bin/bash","-c"]
 RUN set -x && \
     apt-get update && \
     apt-get install -y --no-install-recommends wget unzip git vim lrzsz && \
+    ln -sf /usr/include/cudnn.h /usr/local/cuda/include/cudnn.h && \
+    ln -sf /usr/lib/x86_64-linux-gnu/libcudnn.so /usr/local/cuda/lib64/libcudnn.so && \
+    ln -sf /usr/lib/x86_64-linux-gnu/libcudnn_static.a /usr/local/cuda/lib64/libcudnn_static.a && \
+    ln -sf /usr/lib/x86_64-linux-gnu/libcudnn.so.7.6.5 /usr/local/cuda/lib64/libcudnn.so.7 && \
+    ln -sf /usr/lib/x86_64-linux-gnu/libcudnn.so.7.6.5 /usr/local/cuda/lib64/libcudnn.so.7.6.5  && \
     mkdir -p /root/projects/infer_lib/ && \
     mkdir -p /root/projects/models/ && \
     mkdir -p /root/downloads/ && \
     cd /root/downloads/ && \
-    wget -c https://paddleseg.bj.bcebos.com/deploy/docker/cudnn-10.0-linux-x64-v7.4.1.5.tgz && \
-    tar xvf cudnn-10.0-linux-x64-v7.4.1.5.tgz && \
-    mv cuda/include/* /usr/local/cuda/include/ && \
-    mv cuda/lib64/* /usr/local/cuda/lib64/ && \
     wget -c https://paddleseg.bj.bcebos.com/deploy/docker/gcc-4.8.5.tar.bz2 && \
     tar xvfj gcc-4.8.5.tar.bz2 && \
     mv gcc-4.8.5 /usr/local/ && \
