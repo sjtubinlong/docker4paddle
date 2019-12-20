@@ -1,0 +1,53 @@
+FROM hub.baidubce.com/paddlepaddle-sz/cuda:9.2-cudnn7-devel-ubuntu16.04
+COPY packages/sys/sources.list /etc/apt/
+SHELL ["/bin/bash","-c"]
+RUN set -x && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends wget unzip git vim lrzsz && \
+    apt-get install -y --no-install-recommends libglib2.0-0 libsm6 libxext6 libxrender1 && \
+    mkdir -p /root/projects/ && \
+    mkdir -p /root/projects/models/ && \
+    mkdir -p /root/downloads/ && cd /root/downloads && \
+    wget -c https://paddleseg.bj.bcebos.com/deploy/docker/PaddleDetection.tar.bz2 && \
+    tar xvfj PaddleDetection.tar.bz2 && \
+    mv PaddleDetection /root/projects/ && \
+    wget -c https://paddleseg.bj.bcebos.com/inference/PaddleSeg.tar.bz2 && \
+    tar xvfj PaddleSeg.tar.bz2 && \
+    mv PaddleSeg /root/projects/ && \
+    wget -c https://paddleseg.bj.bcebos.com/deploy/docker/Miniconda3-latest-Linux-x86_64.sh && \
+    sh ./Miniconda3-latest-Linux-x86_64.sh -b -p /root/miniconda3/ && \
+    export PATH="/root/miniconda3/bin:$PATH" && \
+    conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/ && \
+    conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/ && \
+    conda config --set show_channel_urls yes && \
+    conda create -y --name py3.7 python=3.7 && \
+    source /root/miniconda3/etc/profile.d/conda.sh && \
+    conda init && \
+    echo "conda activate py3.7" >> /root/.bashrc && \
+    conda activate py3.7 && \
+    pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple && \
+    conda install -y numpy && \
+    conda install -y pyyaml && \
+    pip install futures && \
+    pip install opencv-python && \
+    pip install python-gflags && \
+    pip install cython && \
+    pip install pycocotools && \
+    pip install -r /root/projects/PaddleDetection/requirements.txt && \
+    pip install -r /root/projects/PaddleSeg/deploy/python/requirements.txt && \
+    wget -c https://paddleseg.bj.bcebos.com/deploy/docker/nv-tensorrt-repo-ubuntu1604-cuda9.0-trt5.1.5.0-ga-20190427_1-1_amd64.deb && \
+    dpkg -i nv-tensorrt-repo-ubuntu1604-cuda9.0-trt5.1.5.0-ga-20190427_1-1_amd64.deb && \
+    apt-key add /var/nv-tensorrt-repo-cuda9.0-trt5.1.5.0-ga-20190427/7fa2af80.pub && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends libnvinfer5=5.1.5-1+cuda9.0 && \
+    apt-get install -y --no-install-recommends libnvinfer-dev=5.1.5-1+cuda9.0 && \
+    wget -c https://paddleseg.bj.bcebos.com/deploy/docker/paddlepaddle_gpu-1.6.1-cp37-cp37m-linux_x86_64.whl && \
+    pip install paddlepaddle_gpu-1.6.1-cp37-cp37m-linux_x86_64.whl && \
+    wget -c https://paddleseg.bj.bcebos.com/deploy/docker/humanseg_origin.tar.bz2 && \
+    tar xvfj humanseg_origin.tar.bz2 && \
+    mv humanseg_origin /root/projects/models/ && \
+    wget -c https://paddleseg.bj.bcebos.com/deploy/docker/humanseg_pr.tar.bz2 && \
+    tar xvfj humanseg_pr.tar.bz2 && \
+    mv humanseg_pr /root/projects/models/ && \
+    rm -rf /root/downloads/
+WORKDIR /root/
