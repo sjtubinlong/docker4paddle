@@ -44,3 +44,4 @@ RUN set -x && \
     mkdir build && cd build && \
     wget -c https://paddleseg.bj.bcebos.com/deploy/docker/seg_cpp_build.sh && \
     rm -rf /root/downloads/ \
+WORKDIR /root/
