@@ -37,7 +37,7 @@ RUN set -x && \
     wget -c https://paddle-inference-lib.bj.bcebos.com/1.6.2-gpu-cuda10-cudnn7-avx-mkl/fluid_inference.tgz && \
     tar xvf fluid_inference.tgz && \
     mv fluid_inference /root/projects/infer_lib/ && \
-    wget -c https://paddleseg.bj.bcebos.com/inference/PaddleSeg.tar.bz2 && \
+    wget -c https://paddleseg.bj.bcebos.com/deploy/docker/PaddleSeg.tar.bz2 && \
     tar xvfj PaddleSeg.tar.bz2 && \
     mv PaddleSeg /root/projects/ && \
     cd /root/projects/PaddleSeg/deploy/cpp/ && \

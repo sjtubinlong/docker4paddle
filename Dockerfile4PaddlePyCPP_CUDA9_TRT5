@@ -43,7 +43,7 @@ RUN set -x && \
     wget -c https://paddleseg.bj.bcebos.com/deploy/docker/PaddleDetection.tar.bz2 && \
     tar xvfj PaddleDetection.tar.bz2 && \
     mv PaddleDetection /root/projects/ && \
-    wget -c https://paddleseg.bj.bcebos.com/inference/PaddleSeg.tar.bz2 && \
+    wget -c https://paddleseg.bj.bcebos.com/deploy/docker/PaddleSeg.tar.bz2 && \
     tar xvfj PaddleSeg.tar.bz2 && \
     mv PaddleSeg /root/projects/ && \
     wget -c https://paddleseg.bj.bcebos.com/deploy/docker/Miniconda3-latest-Linux-x86_64.sh && \
