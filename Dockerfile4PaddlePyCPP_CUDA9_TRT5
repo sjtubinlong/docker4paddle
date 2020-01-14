@@ -3,7 +3,7 @@ COPY packages/sys/sources.list /etc/apt/
 SHELL ["/bin/bash","-c"]
 RUN set -x && \
     apt-get update && \
-    apt-get install -y --no-install-recommends wget unzip git vim lrzsz && \
+    apt-get install -y --no-install-recommends ssh wget unzip git vim lrzsz && \
     apt-get install -y --no-install-recommends libglib2.0-0 libsm6 libxext6 libxrender1 && \
     ln -sf /usr/include/cudnn.h /usr/local/cuda/include/cudnn.h && \
     ln -sf /usr/lib/x86_64-linux-gnu/libcudnn.so /usr/local/cuda/lib64/libcudnn.so && \
@@ -30,7 +30,7 @@ RUN set -x && \
     wget -c https://paddleseg.bj.bcebos.com/inference/cmake-3.15.0.tar.gz && \
     tar xvf cmake-3.15.0.tar.gz && \
     cd cmake-3.15.0 && \
-    mkdir build && cd build && \
+    mkdir -p build && cd build && \
     ../configure && \
     make -j12 && make install && \ 
     cd /root/downloads/ && \
